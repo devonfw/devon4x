@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="MvvmCross" Version="6.1.2" />
+    <PackageReference Include="Xciles.Uncommon" Version="1.5.0" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Folder Include="Business\Interfaces\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Models\" />
+    <Folder Include="Presentation\" />
+    <Folder Include="Observable\" />
+    <Folder Include="Presentation\Interfaces\" />
+    <Folder Include="State\" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Excalibur.Cross\Excalibur.Cross.csproj" />
+    <ProjectReference Include="..\..\Core\Providers\Excalibur.Providers.File\Excalibur.Providers.File.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>OASP4X.Excalibur.Standard</id>
+    <version>0.0.2</version>
+    <title>OASP4X Excalibur framework for .Net Standard 2.0</title>
+    <authors>Capgemini</authors>
+    <owners>Capgemini S.A.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/Xciles/Excalibur/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Xciles/Excalibur</projectUrl>
+    <description>Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms (MvvmCross based). Custom implementations for other frameworks can be developed using the Excalibur.Shared.</description>
+    <summary>Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms</summary>
+    <releaseNotes>Standard 2.0 version with MVVMCross 6.1+.
+
+Added special targeted folders
+
+Also check  https://github.com/oasp/oasp4x</releaseNotes>
+    <copyright>2018</copyright>
+    <language>en-GB</language>
+    <tags>OASP4X Excalibur</tags>
+    <dependencies>
+      <dependency id="MvvmCross" version="6.1.2" />
+      <dependency id="MvvmCross.Plugin.JsonLocalization" version="6.1.2" />
+      <dependency id="MvvmCross.Plugin.Visibility" version="6.1.2" />
+      <dependency id="PubSub" version="2.0.0" />
+      <dependency id="AutoMapper" version="7.0.1" />
+      <dependency id="XLabs.IoC" version="2.3.0-pre05" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="lib\Mono\Excalibur.Common.dll" target="lib\Mono\Excalibur.Common.dll" />
+    <file src="lib\Mono\Excalibur.Cross.dll" target="lib\Mono\Excalibur.Cross.dll" />
+    <file src="lib\Mono\Excalibur.Providers.File.dll" target="lib\Mono\Excalibur.Providers.File.dll" />
+    <file src="lib\Mono\Excalibur.Shared.dll" target="lib\Mono\Excalibur.Shared.dll" />
+    <file src="lib\MonoAndroid\Excalibur.Common.dll" target="lib\MonoAndroid\Excalibur.Common.dll" />
+    <file src="lib\MonoAndroid\Excalibur.Cross.dll" target="lib\MonoAndroid\Excalibur.Cross.dll" />
+    <file src="lib\MonoAndroid\Excalibur.Providers.File.dll" target="lib\MonoAndroid\Excalibur.Providers.File.dll" />
+    <file src="lib\MonoAndroid\Excalibur.Shared.dll" target="lib\MonoAndroid\Excalibur.Shared.dll" />
+    <file src="lib\MonoTouch\Excalibur.Common.dll" target="lib\MonoTouch\Excalibur.Common.dll" />
+    <file src="lib\MonoTouch\Excalibur.Cross.dll" target="lib\MonoTouch\Excalibur.Cross.dll" />
+    <file src="lib\MonoTouch\Excalibur.Providers.File.dll" target="lib\MonoTouch\Excalibur.Providers.File.dll" />
+    <file src="lib\MonoTouch\Excalibur.Shared.dll" target="lib\MonoTouch\Excalibur.Shared.dll" />
+    <file src="lib\netstandard2.0\Excalibur.Common.dll" target="lib\netstandard2.0\Excalibur.Common.dll" />
+    <file src="lib\netstandard2.0\Excalibur.Cross.dll" target="lib\netstandard2.0\Excalibur.Cross.dll" />
+    <file src="lib\netstandard2.0\Excalibur.Providers.File.dll" target="lib\netstandard2.0\Excalibur.Providers.File.dll" />
+    <file src="lib\netstandard2.0\Excalibur.Shared.dll" target="lib\netstandard2.0\Excalibur.Shared.dll" />
+  </files>
+</package>

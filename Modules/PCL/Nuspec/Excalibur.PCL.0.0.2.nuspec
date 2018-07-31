@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Excalibur.PCL</id>
+    <version>0.0.2</version>
+    <title>Excalibur framework for PCL</title>
+    <authors>Hans Harts</authors>
+    <owners>Capgemini S.A.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/Xciles/Excalibur/master/LICENSE</licenseUrl>
+    <description>Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms (MvvmCross based). Custom implementations for other frameworks can be developed using the Excalibur.Shared.</description>
+    <summary>Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms</summary>
+    <copyright>2018</copyright>
+    <language>en-GB</language>
+    <tags>OASP4X Excalibur</tags>
+  </metadata>
+</package>
