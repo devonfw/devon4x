@@ -1,0 +1,816 @@
+:toc: macro
+toc::[]
+:icons: font
+:iconfont-remote!:
+:iconfont-name: font-awesome
+:stylesdir: css
+
+= [navy]#Packages overview#
+
+
+NOTE: _OASP4Net_ is composed by a number of packages that increases the functionality and boosts time development. Each package has it's own configuration to make them work properly. In _appsettings.json_ set up your environment. On _appsettings.{environment}.json_ you can configure each component.
+
+
+= [navy]#The packages#
+
+You can get the OASP packages on https://www.nuget.org/packages?q=oasp[nuget.org].
+
+=== [navy]#OASP4Net.Domain.Context#
+==== [navy]#Description#
+OASP4Net.Domain.Context contains the extended class OASP4NetBaseContext in order to make easier the process of having a model context configured against different database engines. This configuration allows an easier testing configuration against local and in memory databases.
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> Install-Package OASP4Net.Domain.Context
+
+- Add to _appsettings.{environment}.json_ file your database connections:
+
+[source,json]
+----
+"ConnectionStrings": 
+{
+"DefaultConnection": 
+"Server=localhost;Database=MyThaiStar;User Id=sa;Password=sa;MultipleActiveResultSets=True;",
+    
+"AuthConnection":
+"Server=(localdb)\\mssqllocaldb;Database=aspnet-DualAuthCore-5E206A0B-D4DA-4E71-92D3-87FD6B120C5E;Trusted_Connection=True;MultipleActiveResultSets=true",
+    
+"SqliteConnection": "Data Source=c:\\tmp\\membership.db;"
+}
+----
+
+
+
+- On Startup.cs :
+
+[source, c#]
+----
+void ConfigureServices(IServiceCollection services)
+----
+- Add your database connections defined on previous point:
+
+[source, c#]
+----
+services.ConfigureDataBase(
+new Dictionary<string, string> { 
+{ConfigurationConst.DefaultConnection, Configuration.GetConnectionString(ConfigurationConst.DefaultConnection) }});
+----
+
+- On OASP4Net.Application.Configuration.Startup/DataBaseConfiguration/ConfigureDataBase configure your connections.
+
+
+
+=== [navy]#OASP4Net.Domain.UnitOfWork#
+==== [navy]#Description#
+Unit of work implementation for OASP solution. This unit of work provides the different methods to access the data layer with an atomic context. Sync and Async repository operations are provided. Customized Eager Loading method also provided for custom entity properties.
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> Install-Package OASP4Net.Domain.UnitOfWork
+
+
+
+- Add this line of code:
+
+[source, c#]
+----
+services.AddUnitOfWorkDependencyInjection(); 
+----
+
+
+On
+
+    Startup.cs/ConfigureServices(IServiceCollection services)
+
+or on:
+
+    OASP4Net.Application.Configuration.Startup/DependencyInjectionConfiguration/ConfigureDependencyInjectionService method.
+
+==== [navy]#Notes#
+Now you can use the unit of work via dependency injection on your classes:
+
+[[img-t-architecture]]
+.Use of Unit of work via dependency injection
+image::images/uow_sample.png["UOW DI Sample", width="*", link="images/uow_sample.png"]
+
+
+As you can see in the image, you can use Unit Of Work class with your defined ModelContext classes.
+
+=== [navy]#OASP4Net.Infrastructure.AOP#
+==== [navy]#Description#
+Simple AOP Exception handler for .Net Controller classes integrated with Serilog.
+
+==== [navy]#Configuration#
+- Install package on your solution:
+
+   PM> Install-Package OASP4Net.Domain.AOP
+
+
+
+Add this line of code on ConfigureServices method on Startup.cs
+
+[source, c#]
+----
+services.AddAopAttributeService();
+----
+
+
+
+==== [navy]#Notes#
+
+Now automatically your exposed API methods exposed on controller classes will be tracked on the methods:
+
+- OnActionExecuting
+- OnActionExecuted
+- OnResultExecuting
+- OnResultExecuted
+
+If an exception occuers, a message will be displayed on log with the stack trace.
+
+
+=== [navy]#OASP4Net.Infrastructure.ApplicationUser#
+==== [navy]#Description#
+OASP4NET Application user classes to implement basic Microsoft's basic authentication in order to be used on authentication methodologies such Jason Web Token (JWT).
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.ApplicationUser 
+
+- Add the database connection string for user management on _appsettings.{environment}.json_:
+
+[source,json]
+----
+"ConnectionStrings": 
+{
+"AuthConnection":
+"Server=(localdb)\\mssqllocaldb;Database=aspnet-DualAuthCore-5E206A0B-D4DA-4E71-92D3-87FD6B120C5E;Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+----
+
+
+- Add the following line of code
+
+[source, c#]
+----
+services.AddApplicationUserDependencyInjection();
+----
+
+On
+
+    Startup.cs/ConfigureServices(IServiceCollection services)
+
+or on:
+
+    OASP4Net.Application.Configuration.Startup/DependencyInjectionConfiguration/ConfigureDependencyInjectionService method.
+    
+    
+- Add the data seeder on Configure method on start.cs class:
+
+[source, c#]
+----
+
+public void Configure(IApplicationBuilder app, IHostingEnvironment env, DataSeeder seeder)
+{
+    ...
+    
+    app.UseAuthentication();
+    seeder.SeedAsync().Wait();
+
+    ...
+}
+
+----
+
+ 
+==== [navy]#Notes#
+
+- You can use the following methods to set up the database configuration:
+[source, c#]
+----
+public static void AddApplicationUserDbContextInMemoryService(this IServiceCollection services)
+
+public static void AddApplicationUserDbContextSQliteService(this IServiceCollection services, string connectionString)
+
+public static void AddApplicationUserDbContextSQlServerService(this IServiceCollection services, string connectionString)
+----
+
+- The method _AddApplicationUserDbContextInMemoryService_ uses the _AuthContext_ connection string name to set up the database.
+
+- This component is used with the components _OASP4Net.Infrastructure.JWT_ and _OASP4Net.Infrastructure.JWT.MVC_.
+
+
+=== [navy]#OASP4Net.Infrastructure.Communication#
+==== [navy]#Description#
+Basic client classes to  invoke GET/POST methods asynchronously. This component has the minimal clases to send basic data. For more complex operations please use _ASP4Net.Infrastructure.Extensions_.
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.Communication 
+
+- Create an instance of _RestManagementService_ class.
+- Use next methods to use GET/POST basic options:
+
+[source, c#]
+----
+public Task<string> CallGetMethod(string url);
+public Task<Stream> CallGetMethodAsStream(string url);
+public Task<string> CallPostMethod<T>(string url, T dataToSend);
+public Task<string> CallPutMethod<T>(string url, T dataToSend);
+----
+
+
+==== [navy]#Notes#
+- Example:
+
+[source, c#]
+----
+
+private async Task RestManagementServiceSample(EmailDto dataToSend)
+{
+    var url = Configuration["EmailServiceUrl"];
+    var restManagementService = new RestManagementService();
+    await restManagementService.CallPostMethod(url, dataToSend);
+}
+----
+
+
+
+
+=== [navy]#OASP4Net.Infrastructure.Cors#
+==== [navy]#Description#
+Enables CORS configuration for OASP4Net application. Multiple domains can be configured from configuration. Mandatory to web clients (p.e. Angular) to prevent making AJAX requests to another domain.
+
+Cross-Origin Resource Sharing (CORS) is a mechanism that uses additional HTTP headers to tell a browser to let a web application running at one origin (domain) have permission to access selected resources from a server at a different origin. A web application makes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, and port) than its own origin.
+
+Plase reffer to https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1[this link] to get more information about CORS and .Net core.
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.Cors
+
+- You can configure your Cors configuration on _appsettings.{environment}.json_:
+
+    CorsPolicy: indicates the name of the policy. You can use this name to add security headers on your API exposed methods.
+
+    Origins: The alowed domains
+    
+    Headers: The allowed headers such accept,content-type,origin,x-custom-header
+
+- If you specify the cors configuration as empty array, a default Corspolicy will be enabled enabled with all origins enabled:
+
+
+[source,json]
+----
+  "Cors": []
+----
+
+- On the other hand, you can specify different Cors policies in your solution as follows:
+
+[source,json]
+----
+
+"Cors": []
+[
+  {
+    "CorsPolicy": "CorsPolicy1",
+    "Origins": "http:example.com,http:www.contoso.com",
+    "Headers": "accept,content-type,origin,x-custom-header",
+    "Methods": "GET,POST,HEAD",
+    "AllowCredentials": true
+  },
+  {
+    "CorsPolicy": "CorsPolicy2",
+    "Origins": "http:example.com,http:www.contoso.com",
+    "Headers": "accept,content-type,origin,x-custom-header",
+    "Methods": "GET,POST,HEAD",
+    "AllowCredentials": true
+  }
+]
+----
+
+==== [navy]#Notes#
+
+- To use CORS in your API methods, use the next notation:
+
+[source,C#]
+----    
+[EnableCors("YourCorsPolicy")] 
+public IActionResult Index() {  
+    return View();  
+}  
+----
+    
+    
+- if you want to disble the CORS check use the following annotation:
+
+[source,C#]
+----    
+[DisableCors]  
+public IActionResult Index() {  
+    return View();  
+}  
+----
+
+=== [navy]#OASP4Net.Infrastructure.Extensions#
+==== [navy]#Description#
+Miscellaneous extension libreray which contains :
+- Predicate expression builder
+- DateTime formatter
+- HttpClient 
+- HttpContext (Middleware support)
+
+==== [navy]#Configuration#
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.Extensions 
+    
+==== [navy]#Notes#
+
+_Predicate expression builder_
+ 
+- Use this expression builder to generate lambda expressions dynamically. 
+
+    var predicate =  PredicateBuilder.True<T>();
+
+    
+Where T is a class. At this moment, you can build your expression and apply it to obtain your results in a efficient way and not retrieving data each time you apply an expression.
+    
+- Exaple from My Thai Star .Net Core implementation:
+
+
+[source,C#]
+----    
+
+public async Task<PaginationResult<Dish>> GetpagedDishListFromFilter(int currentpage, int pageSize, bool isFav, decimal maxPrice, int minLikes, string searchBy, IList<long> categoryIdList, long userId)
+{
+    var includeList = new List<string>{"DishCategory","DishCategory.IdCategoryNavigation", "DishIngredient","DishIngredient.IdIngredientNavigation","IdImageNavigation"};
+    
+    //Here we create our predicate builder
+    var dishPredicate = PredicateBuilder.True<Dish>();
+
+
+    //Now we start applying the different criterias:
+    if (!string.IsNullOrEmpty(searchBy))
+    {
+        var criteria = searchBy.ToLower();
+        dishPredicate = dishPredicate.And(d => d.Name.ToLower().Contains(criteria) || d.Description.ToLower().Contains(criteria));
+    }
+    
+    if (maxPrice > 0) dishPredicate = dishPredicate.And(d=>d.Price<=maxPrice);
+
+    if (categoryIdList.Any())
+    {
+        dishPredicate = dishPredicate.And(r => r.DishCategory.Any(a => categoryIdList.Contains(a.IdCategory)));
+    }
+    
+    if (isFav && userId >= 0)
+    {
+        var favourites = await UoW.Repository<UserFavourite>().GetAllAsync(w=>w.IdUser == userId);
+        var dishes = favourites.Select(s => s.IdDish);
+        dishPredicate = dishPredicate.And(r=> dishes.Contains(r.Id));                
+    }
+    
+    // Now we can use the predicate to retrieve data from database with just one call
+    return await UoW.Repository<Dish>().GetAllIncludePagedAsync(currentpage, pageSize, includeList, dishPredicate);
+
+}
+----
+
+_HttpContext_
+
+- TryAddHeader method is used on _OASP4Net.Infrastructure.Middleware_ component to add automatically response header options such authorization.
+
+
+_Cryptography_
+
+-  Adds to _string_ class the following conversion methods:
+
+         ToSHA256
+         ToSHA512
+         ToMD5
+         
+_Datetime_
+
+- Adds the _ConvertDateTimeToMilliseconds_ method to _DateTime_ class. It is very helpfull to get aligned with frontend frameworks.
+
+
+_Http Client_
+
+- Contains synchronous and asyncrhonous methods to perform Http method calls such:
+    
+    Post 
+    Put
+    Patch
+
+
+
+=== [navy]#OASP4Net.Infrastructure.JWT#
+==== [navy]#Description#
+
+[quote, What is JSON Web Token?, https://jwt.io/introduction/]
+____
+JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.
+____
+
+
+- OASP component to manage JWT standard to provide security to .Net API applications.
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.JWT
+
+- You can configure your JWT configuration on _appsettings.{environment}.json_:
+
+
+[source, json]
+----
+"JWT": {
+    "Audience": "MyThaiStar",
+    "Issuer": "MyThaiStar",
+    "TokenExpirationTime": 60,
+    "ValidateIssuerSigningKey": true,
+    "ValidateLifetime": true,
+    "ClockSkew": 5,
+    "Certificate": "oasp4net.pfx",
+    "CertificatePassword": "oasp4net"
+}
+----
+
+- _ClockSkew_ indicates the token expiration time in minutes
+- _Certificate_ you can especify the name of your certificate (if it is on the same path) or the full path of the certificate. If the certificate does not exists an exception will be raised.
+
+
+
+- Add this line of code:
+
+[source, c#]
+----
+services.AddBusinessCommonJwtPolicy();
+----
+
+
+On
+
+    Startup.cs/ConfigureServices(IServiceCollection services)
+
+or on:
+
+    OASP4Net.Application.Configuration.Startup/JwtApplicationConfiguration/ConfigureJwtPolicy method.
+
+
+
+- Inside the _AddBusinessCommonJwtPolicy_ method you can add your JWT Policy like in My Thai Star application sample:
+
+[source, c#]
+----
+ services.ConfigureJwtAddPolicy("MTSWaiterPolicy", "role", "waiter");
+----
+
+==== [navy]#Notes#
+
+- The certificate will be used to generate the simetric key to encrypt the json web token.
+
+
+=== [navy]#OASP4Net.Infrastructure.JWT.MVC#
+==== [navy]#Description#
+- OASP Extended controller to interact with JWT features
+
+==== [navy]#Configuration#
+
+- Extend your _ Microsoft.AspNetCore.Mvc.Controller_ class with _OASP4NetJWTController_ class:
+
+[source, c#]
+----
+public class LoginController : OASP4NetJWTController
+{        
+    private readonly ILoginService _loginService;
+
+    public LoginController(ILoginService loginService,  SignInManager<ApplicationUser>  signInManager, UserManager<ApplicationUser> userManager, ILogger<LoginController> logger, IMapper mapper) : base(logger,mapper)
+    {
+        _loginService = loginService;
+    }
+    
+    ....
+----
+
+==== [navy]#Notes#
+
+- In order to generate a JWT, you should implement the JWT generation on user login. For example, in My Thai Star is created as follows:
+
+[source, c#]
+----
+public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
+{
+    try
+    {
+        if (loginDto == null) return Ok();
+        var loged = await _loginService.LoginAsync(loginDto.UserName, loginDto.Password);
+        
+        if (loged)
+        {
+            var user = await _loginService.GetUserByUserNameAsync(loginDto.UserName);
+            
+            var encodedJwt = new JwtClientToken().CreateClientToken(_loginService.GetUserClaimsAsync(user));
+            
+            
+            
+            Response.Headers.Add("Access-Control-Expose-Headers", "Authorization");
+            
+            Response.Headers.Add("Authorization", $"{JwtBearerDefaults.AuthenticationScheme} {encodedJwt}");
+            
+            return Ok(encodedJwt);
+        }
+        else
+        {
+            Response.Headers.Clear();
+            return StatusCode((int)HttpStatusCode.Unauthorized, "Login Error");
+        }
+        
+    }
+    catch (Exception ex)
+    {
+        return StatusCode((int)HttpStatusCode.InternalServerError, $"{ex.Message} : {ex.InnerException}");
+    }
+}
+----
+
+- In My Thai Star the JWT will contain the user information such id, roles...
+
+- Once you extend your controller with _OASP4NetJWTController_ you will have available these methods to simplify user management:
+
+[source, c#]
+----
+    public interface IOASP4NetJWTController
+    {
+        // Gets the current user
+        JwtSecurityToken GetCurrentUser(); 
+        
+        // Gets an specific asigned claim of current user
+        Claim GetUserClaim(string claimName, JwtSecurityToken jwtUser = null); 
+        
+        // Gets all the asigned claims of current user
+        IEnumerable<Claim> GetUserClaims(JwtSecurityToken jwtUser = null);
+    }
+----
+
+=== [navy]#OASP4Net.Infrastructure.Middleware#
+==== [navy]#Description#
+- OASP4Net support for middleware classes.
+
+- In ASP.NET Core, middleware classes can handle an HTTP request or response. Middleware can either:
+
+* Handle an incoming HTTP request by generating an HTTP response.
+
+* Process an incoming HTTP request, modify it, and pass it on to another piece of middleware.
+
+* Process an outgoing HTTP response, modify it, and pass it on to either another piece of middleware, or the ASP.NET Core web server.
+
+- OASP4Net supports the following automatic response headers:
+
+* AccessControlExposeHeader
+* StrictTransportSecurityHeader
+* XFrameOptionsHeader
+* XssProtectionHeader
+* XContentTypeOptionsHeader
+* ContentSecurityPolicyHeader
+* PermittedCrossDomainPoliciesHeader
+* ReferrerPolicyHeader:toc: macro
+
+==== [navy]#Configuration#
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.Middleware
+
+- You can configure your Middleware configuration on _appsettings.{environment}.json_:
+
+
+[source, json]
+----
+
+"Middleware": {
+    "Headers": {
+      "AccessControlExposeHeader": "Authorization",
+      "StrictTransportSecurityHeader": "",
+      "XFrameOptionsHeader": "DENY",
+      "XssProtectionHeader": "1;mode=block",
+      "XContentTypeOptionsHeader": "nosniff",
+      "ContentSecurityPolicyHeader": "",
+      "PermittedCrossDomainPoliciesHeader": "",
+      "ReferrerPolicyHeader": ""
+    }
+}
+----
+
+- On the above sample, the server aplication will add to response header the AccessControlExposeHeader, XFrameOptionsHeader, XssProtectionHeader and XContentTypeOptionsHeader headers.
+- If the header response type does not have a value, it will not be added to the response headers.
+
+
+=== [navy]#OASP4Net.Infrastructure.MVC#
+==== [navy]#Description#
+Common classes to extend controller functionality on API. Also provides support for paged results in OASP applications and autommaper injected class.
+
+
+==== [navy]#Configuration#
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.MVC
+    
+    
+==== [navy]#Notes#
+- The generic class _ResultObjectDto<T>_ provides a typed result object with pagination.
+
+
+- The extended class provides the following methods:
+
+[source,c#]
+----
+        ResultObjectDto<T> GenerateResultDto<T>(int? page, int? size, int? total);
+        ResultObjectDto<T> GenerateResultDto<T>(List<T> result, int? page = null, int? size = null);
+----
+
+- _GenerateResultDto_ provides typed _ResultObjectDto_ object or a list of typed _ResultObjectDto_ object. The aim of this methods is to provide a clean management for result objects and not repeating code through the different controller classes.
+
+- The following sample from _My Thai Star_ shows how to use it:
+
+[source, c#]
+----
+public async Task<IActionResult> Search([FromBody] FilterDtoSearchObject filterDto)
+{
+    if (filterDto == null) filterDto = new FilterDtoSearchObject();
+
+    try
+    {
+        var dishList = await _dishService.GetDishListFromFilter(false, filterDto.GetMaxPrice(), filterDto.GetMinLikes(), filterDto.GetSearchBy(),filterDto.GetCategories(), -1);
+        
+        
+        return new OkObjectResult(GenerateResultDto(dishList).ToJson());
+    }
+    catch (Exception ex)
+    {
+        return StatusCode((int)HttpStatusCode.InternalServerError, $"{ex.Message} : {ex.InnerException}");
+    }
+}
+----
+
+
+=== [navy]#OASP4Net.Infrastructure.Swagger#
+==== [navy]#Description#
+- OASP Swagger abstraction to provide full externalized easy configuration. 
+
+- Swagger offers the easiest to use tools to take full advantage of all the capabilities of the OpenAPI Specification (OAS).
+
+
+==== [navy]#Configuration#
+
+- Install package on your solution:
+
+    PM> OASP4Net.Infrastructure.Swagger
+
+- You can configure your Swagger configuration on _appsettings.{environment}.json_:
+
+
+
+[source, json]
+----
+"Swagger": {
+    "Version": "v1",
+    "Title": "OASP4Net API",
+    "Description": "A simple ASP.NET Core Web API capable project",
+    "Terms": "OASP",
+    "Contact": {
+      "Name": "OASP4Net",
+      "Email": "",
+      "Url": ""
+    },
+    "License": {
+      "Name": "OASP4Net",
+      "Url": ""
+    },
+    "Endpoint": {
+      "Name": "V1 Docs",
+      "Url": "/swagger/v1/swagger.json"
+    }
+}
+----
+
+- Add this line of code:
+
+[source, c#]
+----
+services.ConfigureSwaggerService();
+----
+
+
+On
+
+    Startup.cs/ConfigureServices(IServiceCollection services)
+
+
+- Also add this line of code:
+
+[source, c#]
+----
+app.ConfigureSwaggerApplication();
+----
+
+
+On
+
+    Startup.cs/Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+
+- Ensure your API actions and non-route parameters are decorated with explicit "Http" and "From" bindings.
+
+
+==== [navy]#Notes#
+
+- To access to swagger UI launch your API project and type in your html browser the url _http://localhost:yourPort/swagger_.
+
+- In order to generate the documentation annotate your actions with summary, remarks and response tags:
+
+[sourcecode, C#]
+----
+/// <summary>
+/// Method to make a reservation with potentiel guests. The method returns the reservation token with the format: {(CB_|GB_)}{now.Year}{now.Month:00}{now.Day:00}{_}{MD5({Host/Guest-email}{now.Year}{now.Month:00}{now.Day:00}{now.Hour:00}{now.Minute:00}{now.Second:00})}
+/// </summary>
+/// <param name="bookingDto"></param>
+/// <response code="201">Ok.</response>
+/// <response code="400">Bad request. Parser data error.</response>
+/// <response code="401">Unathorized. Autentication fail</response>
+/// <response code="403">Forbidden. Authorization error.</response>
+/// <response code="500">Internal Server Error. The search process ended with error.</response>
+[HttpPost]
+[HttpOptions]
+[Route("/mythaistar/services/rest/bookingmanagement/v1/booking")]
+[AllowAnonymous]
+[EnableCors("CorsPolicy")]
+public async Task<IActionResult> BookingBooking([FromBody]BookingDto bookingDto)
+{
+    try
+    {
+
+    ...
+
+----
+
+- Ensure that your project has the _generate XML documentation file_ check active on buid menu:
+
+
+[[img-t-architecture]]
+.Swagger documentation 
+image::images/swaggerDocXMLCheck.png["Generate documentation XML check", width="*", link="images/swaggerDocXMLCheck.png"]
+
+
+- Ensure that your XML files has the attribute copy always to true:
+
+
+[[img-t-architecture]]
+.Swagger documentation 
+image::images/swaggerDoc.png["Generate documentation XML check", width="*", link="images/swaggerDoc.png"]
+
+
+=== [navy]#OASP4Net.Infrastructure.Test#
+==== [navy]#Description#
+OASP Base classes to create unit tests and integration tests with Moq and xUnit.
+
+==== [navy]#Configuration#
+- Load the template:
+    > dotnet new -i OASP4Net.Test.Template 
+    > dotnet new OASP4NetTest
+    
+
+
+==== [navy]#Notes#
+- At this point you can find this classes:
+* BaseManagementTest
+* DatabaseManagementTest<T> (Where T is a _OASP4NetBaseContext_ class)
+
+
+    
+- For unit testing, inherit a class from _BaseManagementTest_.
+- For integration tests, inherit a class from _DatabaseManagementTest_.
+- The recomended databases in integration test are _in memory database_ or _SQlite database_.
+- Please check _My thai Star_ test project.
+
+
+
+= [navy]#Required software#
+https://code.visualstudio.com/[Visual Studio Code]
+
+https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp[C# Extension for VS Code]
+
+https://www.microsoft.com/net/core[.Net Core SDK]
+
+https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1[CORS in .Net Core]

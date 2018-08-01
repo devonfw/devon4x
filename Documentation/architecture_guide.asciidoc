@@ -1,0 +1,231 @@
+:toc: macro
+toc::[]
+
+== [navy]#Introduction#
+The http://oasp.io[_Open Application Standard Platform_ (OASP)] provides a solution to building applications which combine best-in-class frameworks and libraries as well as industry proven practices and code conventions.
+It massively speeds up development, reduces risks and helps you to deliver better results.
+
+== [navy]#Overview Onion Design#
+
+This guide shows the overall proposed architecture in terms of separated layers making use the Onion architecture pattern. Each layers represents a logical group of components and functionality. In this guide you will learn the basics of the proposed architecture based in layers in order to develop software making use of the best practices.
+
+==  [navy]#Layer specification#
+[quote, Layered Application Guidelines, MSDN Microsoft]
+____
+It is important to understand the distinction between layers and tiers. __Layers__ describe the logical groupings of the functionality and components in an application; whereas __tiers__ describe the physical distribution of the functionality and components on separate servers, computers, networks, or remote locations. Although both layers and tiers use the same set of names (presentation, business, services, and data), remember that only tiers imply a physical separation. It is quite common to locate more than one layer on the same physical machine (the same tier). You can think of the term tier as referring to physical distribution patterns such as two-tier, three-tier, and __n__-tier.
+____
+
+The proposed architecture makes use of cooperating components called layers. Each layer contains a set of components capable to develop a specific functionality.
+
+The next figure represents the different layers:
+
+[[img-t-architecture]]
+.High level architecture representation
+image::images/onion.png["technical architecture", width="450", link="images/onion.png"]
+
+
+The layers are separated in phisical tiers making use of interfaces. This pattern makes possible to be flexible in different kind of projects maximizing performance and deployment strategies (synchronous/asynchronous access, security, component deployment in different environments, microservices...). Another important point is to provide automated unit testing or test-driven development (TDD) facilities.
+
+==== [navy]#Application layer#
+
+The _Application Layer_ encapsulates the different .Net projects and its resource dependencies and manages the user interaction depending on the project's nature.
+
+[[img-t-architecture]]
+.Net application stack
+image::images/project_nature.png["technical architecture", width="850", link="images/project_nature.png"]
+
+The given application template integrates Swagger contract automatic generation. This provides the possibility to external applications (angular, mobile apps, external services...) to consume the data from a well defined exposed contract.
+
+==== [navy]#Business layer#
+The business layer implements the core functionality of the application and encapsulates the component's logic. 
+This layer provides the interface between the data transformation and the application expositure. This allow the data to be optimized and ready for different data consumers.
+
+==== [navy]#Service layer#
+The service layer orchestrates the data obtained between the _Domain Layer_ and the _Business Layer_. Also transforms the data to be used more efficently between layers. 
+
+So, if a service needs the help of another service or repository, the implemented Dependency Injection is the solution to accomplish the task.
+
+In order to be as flexible as the implementation of _Repository Pattern_ in the _Data Layer_ , each service implementation inherits from EntityService class:
+
+[source, c#]
+----
+    public class Service<TContext> : IService where TContext: DbContext
+----
+
+NOTE: Once more <T> is the mapped class which reference the entity from the database context. This abstraction allows to write services implementation with different database contexts
+
+
+==== [navy]#Domain layer#
+
+The data layer provides access to data directly exposed from other systems. The main source use to be a data base system. The provided template makes use of _Entity Framwork_ solution from Microsoft in order to achieve this functionality. 
+
+To make a good use of this technology, _Repository Pattern_ has been implemented with the help of _Unit Of Work_ pattern. Also, the use of generic types are makes this solution to be the most flexible.
+
+Regarding to data base source, each entity is mapped as a class. Repository pattern allows to use this mapped clasess to acces the data base via Entity framework:
+
+[source,C#]
+----
+ public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
+----
+
+NOTE: Where <T> is the mapped class which reference the entity from the database.
+
+The repository and unit of work patterns are create an abstraction layer between the data access layer and the business logic layer of an application.
+
+
+==== [navy]#Cross-Cutting concerns#
+
+Cross-cutting provides the implementation functionality that spans layers. Each functionality is implemented through components able to work stand alone. This approach provides better reusability and mantainability.
+
+A common component set of cross cutting components include different types of functionality regarding to athentication, authorization, security, caching, configuration, logging, and communication.
+
+
+==  [navy]#Communication between Layers: Interfaces#
+
+The main target of the use of interfaces is to loose coupling between layers and minimize dependencies. 
+
+Public interfaces allow to hide implementation details of the components within the layers making use of dependency inversion. 
+
+In order to make this possible, we make use of _Dependency Injection Pattern_ (implementation of dependency inversion) given by default in _.Net Core_.
+
+The provided _Data Layer_ contains the abstract clases to inherite from. All new repository and service classes must inherit from them, also the must implement their own interfaces.
+
+
+[[img-t-architecture]]
+.Architecture representation in deep
+image::images/laryer_arch_detail.png["technical architecture", width="750", link="images/laryer_arch_detail.png"]
+
+== [navy]#Templates#
+=== [navy]#State of the art#
+
+The provided bundle contains two .Net templates (Classic .Net Framework 4.5+ and .Net Core Framework).
+
+Both templates share the same architecture. the current version contains the next functionalities implemented:
+
+
+[[img-t-architecture]]
+.Current available functionality
+image::images/functionality_stack.png["technical architecture", width="820", link="images/functionality_stack.png"]
+
+=== [navy]#Software stack#
+
+.Technology Stack of OASP
+[options="header"]
+|=======================
+|*Topic*|*Detail*|*Implementation*
+|runtime|language & VM|Microsoft .Net 4.6 oder .Net Core Version
+|link:guide-dataaccess-layer[persistence]|OR-mapper| https://msdn.microsoft.com/en-us/data/ee712907.aspx[Entity Framework Core / Entity Framework 6 - Code TBD]
+|link:guide-service-layer[service]|link:guide-service-layer#rest[REST services]|https://www.asp.net/web-api[Web API]
+|link:guide-service-layer[service - integration to external systems - optional]|link:guide-service-layer#soap[SOAP services]|https://msdn.microsoft.com/en-us/library/dd456779(v=vs.110).aspx[WCF]
+|link:guide-logging[logging]|framework|https://github.com/serilog/serilog-extensions-logging[Serilog]
+|link:guide-validation[validation]|framework| https://www.newtonsoft.com/jsonschema/help/html/GenerateWithDataAnnotations.htm[NewtonSoft Json], http://www.asp.net/mvc/overview/older-versions-1/models-data/validation-with-the-data-annotation-validators-cs[DataAnnotations]
+|component management|link:guide-dependency-injection[dependency injection]| https://unity.codeplex.com[Unity]
+|link:guide-security[security]|Authentication & Authorization| https://jwt.io[JWT] https://msdn.microsoft.com/en-us/library/fkytk30f(v=vs.110).aspx[.Net Security - Token based, local Authentication Provider]
+|unit tests|framework|https://xunit.github.io/[xUnit]
+|=======================
+
+
+=== [navy]#Target platforms#
+
+Thanks to the new .Net Core platform from Microsoft, the developed software can be published Windows, Linux, OS X and Android platforms.
+
+The compete RID (Runtime Identifier) catalog is this:
+
+* Windows
+** Portable
+*** win-x86
+*** win-x64
+** Windows 7 / Windows Server 2008 R2
+*** win7-x64
+*** win7-x86
+** Windows 8 / Windows Server 2012
+*** win8-x64
+*** win8-x86
+*** win8-arm
+** Windows 8.1 / Windows Server 2012 R2
+*** win81-x64
+*** win81-x86
+*** win81-arm
+** Windows 10 / Windows Server 2016
+*** win10-x64
+*** win10-x86
+*** win10-arm
+*** win10-arm64
+* Linux
+** Portable
+*** linux-x64
+** CentOS
+*** centos-x64
+*** centos.7-x64
+** Debian
+*** debian-x64
+*** debian.8-x64
+** Fedora
+*** fedora-x64
+*** fedora.24-x64
+*** fedora.25-x64 (.NET Core 2.0 or later versions)
+*** fedora.26-x64 (.NET Core 2.0 or later versions)
+** Gentoo (.NET Core 2.0 or later versions)
+*** gentoo-x64
+** openSUSE
+*** opensuse-x64
+*** opensuse.42.1-x64
+** Oracle Linux
+*** ol-x64
+*** ol.7-x64
+*** ol.7.0-x64
+*** ol.7.1-x64
+*** ol.7.2-x64
+** Red Hat Enterprise Linux
+*** rhel-x64
+*** rhel.6-x64 (.NET Core 2.0 or later versions)
+*** rhel.7-x64
+*** rhel.7.1-x64
+*** rhel.7.2-x64
+*** rhel.7.3-x64 (.NET Core 2.0 or later versions)
+*** rhel.7.4-x64 (.NET Core 2.0 or later versions)
+** Tizen (.NET Core 2.0 or later versions)
+*** tizen
+** Ubuntu
+*** ubuntu-x64
+*** ubuntu.14.04-x64
+*** ubuntu.14.10-x64
+*** ubuntu.15.04-x64
+*** ubuntu.15.10-x64
+*** ubuntu.16.04-x64
+*** ubuntu.16.10-x64
+** Ubuntu derivatives
+*** linuxmint.17-x64
+*** linuxmint.17.1-x64
+*** linuxmint.17.2-x64
+*** linuxmint.17.3-x64
+*** linuxmint.18-x64
+*** linuxmint.18.1-x64 (.NET Core 2.0 or later versions)
+
+* OS X
+** osx-x64 (.NET Core 2.0 or later versions)
+** osx.10.10-x64
+** osx.10.11-x64
+** osx.10.12-x64 (.NET Core 1.1 or later versions)
+* Android
+**   android
+**   android.21
+
+
+
+
+== [navy]#External links#
+
+https://docs.microsoft.com/en-us/dotnet/standard/frameworks[.Net Frameworks]
+
+https://docs.microsoft.com/en-us/ef/[Entity Framwork documentation from Microsoft]
+
+https://swagger.io/[Swagger API tooling]
+
+https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection[Dependency Injection in .NET Core]
+
+https://jwt.io[Json Web Token]
+
+https://xunit.github.io/[Unit Testing (xUnit)]
+
+https://docs.microsoft.com/en-us/dotnet/core/rid-catalog[Runtime IDentifier for publishing]

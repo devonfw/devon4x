@@ -1,0 +1,44 @@
+:toc: macro
+toc::[]
+:icons: font
+:iconfont-remote!:
+:iconfont-name: font-awesome
+:stylesdir: css
+
+= [navy]#Templates#
+
+
+== [navy]#Overview#
+
+The .Net Core and .Net Framework given templates allows to start coding an application with the following functionality ready to use:
+
+[[img-t-architecture]]
+.Current available functionality
+image::images/functionality_stack.png["technical architecture", width="820", link="images/functionality_stack.png"]
+
+Plase refer to link:userguide.html[User guide] in order to start developing.S
+
+
+== [navy]#.Net Core 2.1.x#
+
+The _.Net Core 2.1.x_ template allows you to start developing an n-layer server application to provide the latest features. The template can be used in Visual Studio Code and Visiual Studio 2017.
+
+The application result can be deployed as a console application, microservice or web page.
+
+To start developing with OASP4Net template, please follow this instructions:
+
+==== [navy]#Using OASP4Net template#
+. Open your favourite terminal (Win/Linux/iOS)
+. Go to future project's path
+. Type _dotnet new -i OASP4Net.WebAPI.Template_
+. Type _dotnet new OASP4NetAPI_
+. Go to project's path
+. You are ready to start developing with _OASP4Net_
+
+== [navy]#Links#
+
+icon:= fa-floppy-o[]  link:https://github.com/oasp/oasp4net/tree/develop/Templates[.Net templates]
+
+
+
+
