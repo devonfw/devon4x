@@ -2,230 +2,342 @@
 toc::[]
 
 == [navy]#Introduction#
-The http://oasp.io[_Open Application Standard Platform_ (OASP)] provides a solution to building applications which combine best-in-class frameworks and libraries as well as industry proven practices and code conventions.
-It massively speeds up development, reduces risks and helps you to deliver better results.
+This project tries to bring structure for developers that are using MvvmCross and Xamarin to develop their mobile applications.
 
-== [navy]#Overview Onion Design#
+Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms (MvvmCross based). Custom implementations for other frameworks can be developed using the Excalibur.Shared.
 
-This guide shows the overall proposed architecture in terms of separated layers making use the Onion architecture pattern. Each layers represents a logical group of components and functionality. In this guide you will learn the basics of the proposed architecture based in layers in order to develop software making use of the best practices.
+== [navy]#Requeriments#
 
-==  [navy]#Layer specification#
-[quote, Layered Application Guidelines, MSDN Microsoft]
-____
-It is important to understand the distinction between layers and tiers. __Layers__ describe the logical groupings of the functionality and components in an application; whereas __tiers__ describe the physical distribution of the functionality and components on separate servers, computers, networks, or remote locations. Although both layers and tiers use the same set of names (presentation, business, services, and data), remember that only tiers imply a physical separation. It is quite common to locate more than one layer on the same physical machine (the same tier). You can think of the term tier as referring to physical distribution patterns such as two-tier, three-tier, and __n__-tier.
-____
+=== Windows
+    - Windows 10
+    - Visual Studio Community 2017 
+    - x86 processor to run Android Emulator. If AMD processor is used, you should try another emulator such https://www.genymotion.com[Geny motion].
+    
+    
+++++
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Recommended</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Operating System</strong></td>
+<td>Windows 10</td>
+<td>The minimum operating system version is Windows 7. Xamarin.Forms UWP support requires Windows 10.</td>
+</tr>
+<tr>
+<td><strong>Xamarin.iOS</strong></td>
+<td>iOS 10 SDK (installed on a Mac)</td>
+<td class="">To build iOS projects on Windows requires:<ul><li>Visual Studio 2017, and</li><li>a Mac computer, <a href="../../ios/get-started/installation/windows/connecting-to-mac/index" data-linktype="relative-path">network-accessible</a> from the Windows computer, that conforms to the minimum requirements for running Xamarin on macOS.</li></ul></td>
+</tr>
+<tr>
+<td><strong>Xamarin.Android</strong></td>
+<td>Android 6.0 / API level 23</td>
+<td>You can still target older Android versions while using the latest SDK, or you can build against older versions of the SDK if required.</td>
+</tr>
+<tr>
+<td><strong>Xamarin.Forms</strong></td>
+<td></td>
+<td><ul><li>Xamarin.Forms apps for iOS and Android can be deployed to the relevant platforms as described above.</li><li>Using Visual Studio also means you can test apps for the Universal Windows Platform (on Windows 10) directly on the development computer.</li></ul></td>
+</tr>
+<tr>
+<td><strong>Xamarin.Mac</strong></td>
+<td></td>
+<td>Xamarin.Mac projects (macOS desktop apps) can be opened in Visual Studio and compiled to check for errors, but Mac applications cannot currently be built for distribution in Visual Studio. See the release notes on <a href="https://developer.xamarin.com/releases/vs/xamarin.vs_4/xamarin.vs_4.2/#Xamarin.Mac_minimum_support." data-linktype="external">Xamarin.Mac support</a> for more information about the limitations of Mac projects in Visual Studio.</td>
+</tr>
+</tbody>
+</table>
 
-The proposed architecture makes use of cooperating components called layers. Each layer contains a set of components capable to develop a specific functionality.
+++++
 
-The next figure represents the different layers:
+=== Mac
+
+++++
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Recommended</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong class="">Operating System</strong></td>
+<td>macOS Sierra</td>
+<td>The minimum required version is macOS Sierra (10.12)</td>
+</tr>
+<tr>
+<td><strong>Xamarin.iOS</strong></td>
+<td>iOS 11 SDK</td>
+<td>The iOS that ships with Xcode 9</td>
+</tr>
+<tr>
+<td><strong>Xamarin.Android</strong></td>
+<td>Android 6.0 / API level 23</td>
+<td>You can still target older Android versions while using the latest SDK, or you can build against older versions of the SDK if required.</td>
+</tr>
+<tr>
+<td><strong>Xamarin.Forms</strong></td>
+<td></td>
+<td><ul><li>Xamarin.Forms apps built on macOS can include iOS, Android, and macOS projects, subject to the SDK requirements above.</li><li>Xamarin.Forms projects for Windows/UWP cannot be built on macOS.</li></ul></td>
+</tr>
+<tr>
+<td><strong>Xamarin.Mac</strong></td>
+<td>OS X El Capitan (10.11) SDK</td>
+<td>The OS X El Capitan SDK ships with Xcode 7.2; macOS SDKs ship with Xcode 8.</td>
+</tr>
+</tbody>
+</table>
+
+++++
+
+== [navy]#Project types#
+
+=== [navy]#Portable Class Library (PCL)#
+
+
+IMPORTANT: Portable Class Libraries have been deprecated in the latest version of Visual Studio, and .NET Standard Libraries are recommended instead. Also, there's a PCL Excalibur version to make the framework backwards compatible.
+
+
+PCL projects target specific profiles that support a known set of BCL classes/features. However, the down side to PCL is that they often require extra architectural effort to separate profile specific code into their own libraries.
+
+When you create an Application Project or a Library Project, the resulting DLL is restricted to working on the specific platform it is created for. This prevents you from writing an assembly for a Windows app, and then re-using it on Xamarin.iOS and Xamarin.Android.
+
+This includes profiles that are combinations of:
+
+- .NET 4 or .NET 4.5
+- Silverlight 5
+- Windows Phone 8
+- UWP apps
+
+Benefits
+
+Centralized code sharing – write and test code in a single project that can be consumed by other libraries or applications.
+Refactoring operations will affect all code loaded in the solution (the Portable Class Library and the platform-specific projects).
+The PCL project can be easily referenced by other projects in a solution, or the output assembly can be shared for others to reference in their solutions.
+Disadvantages
+
+Because the same Portable Class Library is shared between multiple applications, platform-specific libraries cannot be referenced (eg. Community.CsharpSqlite.WP7).
+The Portable Class Library subset may not include classes that would otherwise be available in both MonoTouch and Mono for Android (such as DllImport or System.IO.File).
+
 
 [[img-t-architecture]]
-.High level architecture representation
-image::images/onion.png["technical architecture", width="450", link="images/onion.png"]
+.PCL Architecture sample
+image::images/pcl_sample.png["PCL architecture sample", width="750", link="images/pcl_sample.png"]
 
 
-The layers are separated in phisical tiers making use of interfaces. This pattern makes possible to be flexible in different kind of projects maximizing performance and deployment strategies (synchronous/asynchronous access, security, component deployment in different environments, microservices...). Another important point is to provide automated unit testing or test-driven development (TDD) facilities.
+=== [navy]#.NET Standard#
 
-==== [navy]#Application layer#
+NOTE: New Xamarin projects allow to select by default .Net Standard libraries in the latest version of Visual Studio. Now Excalibur framework uses by default this type of libraries. Excalibur Xamarin Forms template is built under this type of libraries.
 
-The _Application Layer_ encapsulates the different .Net projects and its resource dependencies and manages the user interaction depending on the project's nature.
-
-[[img-t-architecture]]
-.Net application stack
-image::images/project_nature.png["technical architecture", width="850", link="images/project_nature.png"]
-
-The given application template integrates Swagger contract automatic generation. This provides the possibility to external applications (angular, mobile apps, external services...) to consume the data from a well defined exposed contract.
-
-==== [navy]#Business layer#
-The business layer implements the core functionality of the application and encapsulates the component's logic. 
-This layer provides the interface between the data transformation and the application expositure. This allow the data to be optimized and ready for different data consumers.
-
-==== [navy]#Service layer#
-The service layer orchestrates the data obtained between the _Domain Layer_ and the _Business Layer_. Also transforms the data to be used more efficently between layers. 
-
-So, if a service needs the help of another service or repository, the implemented Dependency Injection is the solution to accomplish the task.
-
-In order to be as flexible as the implementation of _Repository Pattern_ in the _Data Layer_ , each service implementation inherits from EntityService class:
-
-[source, c#]
-----
-    public class Service<TContext> : IService where TContext: DbContext
-----
-
-NOTE: Once more <T> is the mapped class which reference the entity from the database context. This abstraction allows to write services implementation with different database contexts
+_.NET Standard libraries_ have a uniform API for all .NET Platforms including Xamarin and .NET Core. Create a single .NET Standard Library and use it from any runtime that supports the .NET Standard Platform. 
 
 
-==== [navy]#Domain layer#
+The .NET Standard enables the following key scenarios:
 
-The data layer provides access to data directly exposed from other systems. The main source use to be a data base system. The provided template makes use of _Entity Framwork_ solution from Microsoft in order to achieve this functionality. 
-
-To make a good use of this technology, _Repository Pattern_ has been implemented with the help of _Unit Of Work_ pattern. Also, the use of generic types are makes this solution to be the most flexible.
-
-Regarding to data base source, each entity is mapped as a class. Repository pattern allows to use this mapped clasess to acces the data base via Entity framework:
-
-[source,C#]
-----
- public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
-----
-
-NOTE: Where <T> is the mapped class which reference the entity from the database.
-
-The repository and unit of work patterns are create an abstraction layer between the data access layer and the business logic layer of an application.
-
-
-==== [navy]#Cross-Cutting concerns#
-
-Cross-cutting provides the implementation functionality that spans layers. Each functionality is implemented through components able to work stand alone. This approach provides better reusability and mantainability.
-
-A common component set of cross cutting components include different types of functionality regarding to athentication, authorization, security, caching, configuration, logging, and communication.
-
-
-==  [navy]#Communication between Layers: Interfaces#
-
-The main target of the use of interfaces is to loose coupling between layers and minimize dependencies. 
-
-Public interfaces allow to hide implementation details of the components within the layers making use of dependency inversion. 
-
-In order to make this possible, we make use of _Dependency Injection Pattern_ (implementation of dependency inversion) given by default in _.Net Core_.
-
-The provided _Data Layer_ contains the abstract clases to inherite from. All new repository and service classes must inherit from them, also the must implement their own interfaces.
+- Defines uniform set of BCL APIs for all .NET implementations to implement, independent of workload.
+- Enables developers to produce portable libraries that are usable across .NET implementations, using this same set of APIs.
+- Reduces or even eliminates conditional compilation of shared source due to .NET APIs, only for OS APIs.
 
 
 [[img-t-architecture]]
-.Architecture representation in deep
-image::images/laryer_arch_detail.png["technical architecture", width="750", link="images/laryer_arch_detail.png"]
+.NET Standard diagram
+image::images/dotnet-standard.png[".NET Standard architecture sample", width="750", link="images/dotnet-standard.png"]
 
-== [navy]#Templates#
-=== [navy]#State of the art#
+=== [navy]#.NET Standard Compatibility#
 
-The provided bundle contains two .Net templates (Classic .Net Framework 4.5+ and .Net Core Framework).
+The next chart shows the different .Net Standard versions compatibility with the different .NET frameworks:
 
-Both templates share the same architecture. the current version contains the next functionalities implemented:
+++++
 
+<table>
+<thead>
+<tr>
+<th>.NET Standard</th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.0.md" data-linktype="external">1.0</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.1.md" data-linktype="external">1.1</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.2.md" data-linktype="external">1.2</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.3.md" data-linktype="external">1.3</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.4.md" data-linktype="external">1.4</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.5.md" data-linktype="external">1.5</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.6.md" data-linktype="external">1.6</a></th>
+<th><a href="https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md" data-linktype="external">2.0</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.NET Core</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>.NET Framework <sup>1</sup></td>
+<td>4.5</td>
+<td>4.5</td>
+<td>4.5.1</td>
+<td>4.6</td>
+<td>4.6.1</td>
+<td>4.6.1</td>
+<td>4.6.1</td>
+<td>4.6.1</td>
+</tr>
+<tr>
+<td>Mono</td>
+<td>4.6</td>
+<td>4.6</td>
+<td>4.6</td>
+<td>4.6</td>
+<td>4.6</td>
+<td>4.6</td>
+<td>4.6</td>
+<td>5.4</td>
+</tr>
+<tr>
+<td>Xamarin.iOS</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.14</td>
+</tr>
+<tr>
+<td>Xamarin.Mac</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.8</td>
+</tr>
+<tr>
+<td>Xamarin.Android</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>8.0</td>
+</tr>
+<tr>
+<td>Universal Windows Platform</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>10.0.16299</td>
+<td>10.0.16299</td>
+<td>10.0.16299</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>8.0</td>
+<td>8.0</td>
+<td>8.1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Windows Phone</td>
+<td>8.1</td>
+<td>8.1</td>
+<td>8.1</td>
+<td></td>
+<td></td>
+<td class=""></td>
+<td></td>
+<td class=""></td>
+</tr>
+<tr>
+<td>Windows Phone Silverlight</td>
+<td>8.0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+++++
+
+NOTE: This chart is important in order to make you select the most apropiate  .NET standard version for your librares and reuse them on other projects.
+
+== [navy]#The MVVM Pattern#
+
+In order to create scalable Xamarin applications, you should make use of the MVVM Pattern. Excalibur framework helps to accelerate the speed of MVVM pattern implementation.
+
+There are three core components in the MVVM pattern: the model, the view, and the view model. Each serves a distinct purpose. Figure 2-1 shows the relationships between the three components.
 
 [[img-t-architecture]]
-.Current available functionality
-image::images/functionality_stack.png["technical architecture", width="820", link="images/functionality_stack.png"]
-
-=== [navy]#Software stack#
-
-.Technology Stack of OASP
-[options="header"]
-|=======================
-|*Topic*|*Detail*|*Implementation*
-|runtime|language & VM|Microsoft .Net 4.6 oder .Net Core Version
-|link:guide-dataaccess-layer[persistence]|OR-mapper| https://msdn.microsoft.com/en-us/data/ee712907.aspx[Entity Framework Core / Entity Framework 6 - Code TBD]
-|link:guide-service-layer[service]|link:guide-service-layer#rest[REST services]|https://www.asp.net/web-api[Web API]
-|link:guide-service-layer[service - integration to external systems - optional]|link:guide-service-layer#soap[SOAP services]|https://msdn.microsoft.com/en-us/library/dd456779(v=vs.110).aspx[WCF]
-|link:guide-logging[logging]|framework|https://github.com/serilog/serilog-extensions-logging[Serilog]
-|link:guide-validation[validation]|framework| https://www.newtonsoft.com/jsonschema/help/html/GenerateWithDataAnnotations.htm[NewtonSoft Json], http://www.asp.net/mvc/overview/older-versions-1/models-data/validation-with-the-data-annotation-validators-cs[DataAnnotations]
-|component management|link:guide-dependency-injection[dependency injection]| https://unity.codeplex.com[Unity]
-|link:guide-security[security]|Authentication & Authorization| https://jwt.io[JWT] https://msdn.microsoft.com/en-us/library/fkytk30f(v=vs.110).aspx[.Net Security - Token based, local Authentication Provider]
-|unit tests|framework|https://xunit.github.io/[xUnit]
-|=======================
+.MVVM pattern diagram
+image::images/mvvm.png[".NET Standard architecture sample", width="750", link="images/mvvm.png"]
 
 
-=== [navy]#Target platforms#
+The benefits of using the MVVM pattern are as follows:
 
-Thanks to the new .Net Core platform from Microsoft, the developed software can be published Windows, Linux, OS X and Android platforms.
+- If there's an existing model implementation that encapsulates existing business logic, it can be difficult or risky to change it. In this scenario, the view model acts as an adapter for the model classes and enables you to avoid making any major changes to the model code.
+- Developers can create unit tests for the view model and the model, without using the view. The unit tests for the view model can exercise exactly the same functionality as used by the view.
+- The app UI can be redesigned without touching the code, provided that the view is implemented entirely in XAML. Therefore, a new version of the view should work with the existing view model.
+- Designers and developers can work independently and concurrently on their components during the development process. Designers can focus on the view, while developers can work on the view model and model components.
 
-The compete RID (Runtime Identifier) catalog is this:
+=== View
+The view is responsible for defining the structure, layout, and appearance of what the user sees on screen. Ideally, each view is defined in XAML, with a limited code-behind that does not contain business logic. However, in some cases, the code-behind might contain UI logic that implements visual behavior that is difficult to express in XAML, such as animations.
 
-* Windows
-** Portable
-*** win-x86
-*** win-x64
-** Windows 7 / Windows Server 2008 R2
-*** win7-x64
-*** win7-x86
-** Windows 8 / Windows Server 2012
-*** win8-x64
-*** win8-x86
-*** win8-arm
-** Windows 8.1 / Windows Server 2012 R2
-*** win81-x64
-*** win81-x86
-*** win81-arm
-** Windows 10 / Windows Server 2016
-*** win10-x64
-*** win10-x86
-*** win10-arm
-*** win10-arm64
-* Linux
-** Portable
-*** linux-x64
-** CentOS
-*** centos-x64
-*** centos.7-x64
-** Debian
-*** debian-x64
-*** debian.8-x64
-** Fedora
-*** fedora-x64
-*** fedora.24-x64
-*** fedora.25-x64 (.NET Core 2.0 or later versions)
-*** fedora.26-x64 (.NET Core 2.0 or later versions)
-** Gentoo (.NET Core 2.0 or later versions)
-*** gentoo-x64
-** openSUSE
-*** opensuse-x64
-*** opensuse.42.1-x64
-** Oracle Linux
-*** ol-x64
-*** ol.7-x64
-*** ol.7.0-x64
-*** ol.7.1-x64
-*** ol.7.2-x64
-** Red Hat Enterprise Linux
-*** rhel-x64
-*** rhel.6-x64 (.NET Core 2.0 or later versions)
-*** rhel.7-x64
-*** rhel.7.1-x64
-*** rhel.7.2-x64
-*** rhel.7.3-x64 (.NET Core 2.0 or later versions)
-*** rhel.7.4-x64 (.NET Core 2.0 or later versions)
-** Tizen (.NET Core 2.0 or later versions)
-*** tizen
-** Ubuntu
-*** ubuntu-x64
-*** ubuntu.14.04-x64
-*** ubuntu.14.10-x64
-*** ubuntu.15.04-x64
-*** ubuntu.15.10-x64
-*** ubuntu.16.04-x64
-*** ubuntu.16.10-x64
-** Ubuntu derivatives
-*** linuxmint.17-x64
-*** linuxmint.17.1-x64
-*** linuxmint.17.2-x64
-*** linuxmint.17.3-x64
-*** linuxmint.18-x64
-*** linuxmint.18.1-x64 (.NET Core 2.0 or later versions)
+In a Xamarin.Forms application, a view is typically a Page-derived or ContentView-derived class. However, views can also be represented by a data template, which specifies the UI elements to be used to visually represent an object when it's displayed. A data template as a view does not have any code-behind, and is designed to bind to a specific view model type.
 
-* OS X
-** osx-x64 (.NET Core 2.0 or later versions)
-** osx.10.10-x64
-** osx.10.11-x64
-** osx.10.12-x64 (.NET Core 1.1 or later versions)
-* Android
-**   android
-**   android.21
+=== ViewModel
+The view model implements properties and commands to which the view can data bind to, and notifies the view of any state changes through change notification events. The properties and commands that the view model provides define the functionality to be offered by the UI, but the view determines how that functionality is to be displayed.
+
+The view model is also responsible for coordinating the view's interactions with any model classes that are required. There's typically a one-to-many relationship between the view model and the model classes. The view model might choose to expose model classes directly to the view so that controls in the view can data bind directly to them. In this case, the model classes will need to be designed to support data binding and change notification events.
+
+Each view model provides data from a model in a form that the view can easily consume. To accomplish this, the view model sometimes performs data conversion. Placing this data conversion in the view model is a good idea because it provides properties that the view can bind to. For example, the view model might combine the values of two properties to make it easier for display by the view.
+
+In order for the view model to participate in two-way data binding with the view, its properties must raise the PropertyChanged event. View models satisfy this requirement by implementing the INotifyPropertyChanged interface, and raising the PropertyChanged event when a property is changed.
+
+For collections, the view-friendly ObservableCollection<T> is provided. This collection implements collection changed notification, relieving the developer from having to implement the INotifyCollectionChanged interface on collections.
+
+=== Model
+Model classes are non-visual classes that encapsulate the app's data. Therefore, the model can be thought of as representing the app's domain model, which usually includes a data model along with business and validation logic. Examples of model objects include data transfer objects (DTOs), Plain Old CLR Objects (POCOs), and generated entity and proxy objects.
+
+Model classes are typically used in conjunction with services or repositories that encapsulate data access and caching.
 
 
-
+== [navy]#MVVMCross#
+== [navy]#Excalibur#
+== [navy]#Layer specification#
+== [navy]#Dependency Injection#
 
 == [navy]#External links#
 
-https://docs.microsoft.com/en-us/dotnet/standard/frameworks[.Net Frameworks]
+https://www.mvvmcross.com[MVVMCross]
 
-https://docs.microsoft.com/en-us/ef/[Entity Framwork documentation from Microsoft]
+https://github.com/Xciles/Excalibur[Excalibur framework home]
 
-https://swagger.io/[Swagger API tooling]
+https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/pcl?tabs=windows[PCL fundamentals]
 
-https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection[Dependency Injection in .NET Core]
-
-https://jwt.io[Json Web Token]
-
-https://xunit.github.io/[Unit Testing (xUnit)]
-
-https://docs.microsoft.com/en-us/dotnet/core/rid-catalog[Runtime IDentifier for publishing]
+https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/net-standard?tabs=windows[.NET Standard fundamentals]
