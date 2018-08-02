@@ -6,11 +6,13 @@ This project tries to bring structure for developers that are using MvvmCross an
 
 Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms (MvvmCross based). Custom implementations for other frameworks can be developed using the Excalibur.Shared.
 
+NOTE: Excalibur framework can target Native and forms projects. Please go to https://github.com/Xciles/Excalibur[Excalibur github site] and play with the samples provided.
+
 == [navy]#Requeriments#
 
 === Windows
     - Windows 10
-    - Visual Studio Community 2017 
+    - Latest Visual Studio Community 2017+
     - x86 processor to run Android Emulator. If AMD processor is used, you should try another emulator such https://www.genymotion.com[Geny motion].
     
     
@@ -55,6 +57,7 @@ Excalibur achieves this by using Generics for a lot of boiler plating that you t
 ++++
 
 === Mac
+- Latest Visual Studio for Mac
 
 ++++
 <table>
@@ -305,12 +308,12 @@ The benefits of using the MVVM pattern are as follows:
 - The app UI can be redesigned without touching the code, provided that the view is implemented entirely in XAML. Therefore, a new version of the view should work with the existing view model.
 - Designers and developers can work independently and concurrently on their components during the development process. Designers can focus on the view, while developers can work on the view model and model components.
 
-=== View
+== [navy]#View#
 The view is responsible for defining the structure, layout, and appearance of what the user sees on screen. Ideally, each view is defined in XAML, with a limited code-behind that does not contain business logic. However, in some cases, the code-behind might contain UI logic that implements visual behavior that is difficult to express in XAML, such as animations.
 
 In a Xamarin.Forms application, a view is typically a Page-derived or ContentView-derived class. However, views can also be represented by a data template, which specifies the UI elements to be used to visually represent an object when it's displayed. A data template as a view does not have any code-behind, and is designed to bind to a specific view model type.
 
-=== ViewModel
+== [navy]#ViewModel#
 The view model implements properties and commands to which the view can data bind to, and notifies the view of any state changes through change notification events. The properties and commands that the view model provides define the functionality to be offered by the UI, but the view determines how that functionality is to be displayed.
 
 The view model is also responsible for coordinating the view's interactions with any model classes that are required. There's typically a one-to-many relationship between the view model and the model classes. The view model might choose to expose model classes directly to the view so that controls in the view can data bind directly to them. In this case, the model classes will need to be designed to support data binding and change notification events.
@@ -321,23 +324,184 @@ In order for the view model to participate in two-way data binding with the view
 
 For collections, the view-friendly ObservableCollection<T> is provided. This collection implements collection changed notification, relieving the developer from having to implement the INotifyCollectionChanged interface on collections.
 
-=== Model
+== [navy]#Model#
 Model classes are non-visual classes that encapsulate the app's data. Therefore, the model can be thought of as representing the app's domain model, which usually includes a data model along with business and validation logic. Examples of model objects include data transfer objects (DTOs), Plain Old CLR Objects (POCOs), and generated entity and proxy objects.
 
 Model classes are typically used in conjunction with services or repositories that encapsulate data access and caching.
 
 
 == [navy]#MVVMCross#
+
+The excalibur framework is based on MVVM Cross. Plase read documentation before starting an Excalibur project.
+
+
+
 == [navy]#Excalibur#
-== [navy]#Layer specification#
-== [navy]#Dependency Injection#
+
+Excalibur frameworks works over MVVMCross framework. That's is you can use the power of MVVMCross with the acceleration part from Excalibur. 
+
+Excalibur framework use the MVVM Pattern (well known on Xamarin stack). Excalibur framework gives support to 
+
+- Xamarin Native applications (Android/iOS/UWP)
+- Xamarin Forms
+
+OASP4X is aimed in Xarin Forms in order to reuse the designed views and speed up the development process.
+
+
+=== [navy]#Layer specification#
+
+[[img-t-architecture]]
+.Excalibur forms solution tree
+image::images/solution_tree.png["Excalibur forms solution tree", width="250", link="images/solution_tree.png"]
+
+==== [navy]#Business#
+Manages data within the app
+Saving
+Retrieving
+Updating
+Manages Application state
+Uses services to retrieve and update data
+Publish (pub/sub) entities when updated
+
+==== [navy]#Domain#
+
+Just a tiny entity used for saving data and service communication
+
+==== [navy]#Observable#
+
+Observable entities
+A Domain entity with extended properties and Notifications
+Used by ViewModels and Views instead of Domain
+
+==== [navy]#Presentation#
+Manages observable instances
+Used for sharing the same observable instances between ViewModels
+Subscribes (pub/sub) on certain entities
+Uses Mappers to map Models to Observables
+
+==== [navy]#Service#
+Communication with a back-end
+Used by the Business
+May have its own entity for data transfer (instead of Domain)
+
+==== [navy]#View Models#
+
+Manages navigation
+Manages language bindings
+Views use the ViewModel Observables for binding
+
+
+=== [navy]#App.cs Class#
+In each deployed Excalibur/MvvmCross application there are two key classes which control how your app starts:
+
+- the App class in the core project - which provides the initialization for your core business logic and your viewmodels.
+- the Setup class in the native UI project - this Setup is a bootstrapper for the MvvmCross system and for your app.
+
+
+Typically App.cs provides only initialization of:
+
+[source, c#]
+----
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            CreatableTypes()
+               .EndingWith("Service")
+               .AsInterfaces()
+               .RegisterAsLazySingleton();
+
+            RegisterAppStart<LoginViewModel>();
+        }
+
+----
+
+- within the Assembly containing the App
+- find all creatable Types - meaning:
+- with public constuctors
+- not marked abstract
+- find the interfaces they implement
+- lazily register these types as singletons - meaning:
+- that no instance will be created until one is requested
+- that once the first instance has been created, then that - same instance will be returned for all subsequent requests
+
+
+At this point, yopu can register the MVVM artifacts automatically. 
+
+For example: 
+
+    - The view : LoginPage.xaml/.cs (In the xaml file you can refere the name space of the view model)
+    - The model: LoginViewModel.cs
+    - The Service: LoginService.cs
+    - The observable: Login.cs
+    
+    
+==== [navy]#Dependency Injection#    
+
+Excalibur use the Xamarin.IoC component to implement the inverision of control. In order to register the instance of your classes, override the method _RegisterDependencies_ on App.cs Class:
+
+[source, c#]
+----
+        public override void RegisterDependencies()
+        {
+            // Application Things
+            Container.RegisterSingle<IApplicationState, ApplicationState>();
+            Container.RegisterSingle<ISyncService, SyncService>();
+            ...
+        }
+----
+
+* _Container_ is the IoC class (Excalibur's SimpleContainer class) that register your class.
+
+* In this method you can register the application services, domain objects, business objects, observable objects... Please play with https://github.com/oasp/oasp4x/tree/develop/Samples/Standard/MyThaiStar[My Thai Star sample] in order to discover Excalibur's life cicle.
+
+
+=== [navy]#StorageDomain Class#
+The _StorageDomain_ class can be used for local database operations on the device. It's very useful to store local data such user preferences, auth tokens, item kart...
+
+==== [navy]#How to use#
+
+If you want to work with _StorageDomain_ class just inherit your class from _StorageDomain_. For example:
+
+[source, c#]
+----
+    public class Todo : StorageDomain<int>
+    {
+        public int UserId { get; set; }
+        public string Title { get; set; }
+        public bool Completed { get; set; }
+    }
+----
+
+- The methods:
+    
+    * UpdateFromServiceAsync(): Updates the storage entities using a <see cref="IServiceBase{T}"/>. Afterwards this should publish a message to all subscribers
+    
+    *  PublishFromStorageAsync: Gets data to notify subscribers. Entities should be loaded (if needed) from storage, not from services.
+    
+    * Sample to save data on a view model:
+    **  await Resolver.Resolve<IListBusiness<int, Domain.User>>().UpdateFromServiceAsync();
+    
+    * Sample to load data on a view model:
+    ** if (!Observables.Any())
+            {
+                Resolver.Resolve<IListBusiness<int, Domain.Todo>>().PublishFromStorageAsync();
+            }
+        }
+
+
+
 
 == [navy]#External links#
 
-https://www.mvvmcross.com[MVVMCross]
+
 
 https://github.com/Xciles/Excalibur[Excalibur framework home]
 
 https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/pcl?tabs=windows[PCL fundamentals]
 
 https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/net-standard?tabs=windows[.NET Standard fundamentals]
+
+https://www.mvvmcross.com[MVVMCross]
+
+https://www.mvvmcross.com/documentation/advanced/customizing-using-App-and-Setup[MVVMCross setup]

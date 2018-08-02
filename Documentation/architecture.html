@@ -440,17 +440,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#true-span-class-navy-net-standard-compatibility-span"><span class="navy">.NET Standard Compatibility</span></a></li>
 </ul>
 </li>
-<li><a href="#true-span-class-navy-the-mvvm-pattern-span"><span class="navy">The MVVM Pattern</span></a>
+<li><a href="#true-span-class-navy-the-mvvm-pattern-span"><span class="navy">The MVVM Pattern</span></a></li>
+<li><a href="#true-span-class-navy-view-span"><span class="navy">View</span></a></li>
+<li><a href="#true-span-class-navy-viewmodel-span"><span class="navy">ViewModel</span></a></li>
+<li><a href="#true-span-class-navy-model-span"><span class="navy">Model</span></a></li>
+<li><a href="#true-span-class-navy-mvvmcross-span"><span class="navy">MVVMCross</span></a></li>
+<li><a href="#true-span-class-navy-excalibur-span"><span class="navy">Excalibur</span></a>
 <ul class="sectlevel2">
-<li><a href="#trueview">View</a></li>
-<li><a href="#trueviewmodel">ViewModel</a></li>
-<li><a href="#truemodel">Model</a></li>
+<li><a href="#true-span-class-navy-layer-specification-span"><span class="navy">Layer specification</span></a></li>
+<li><a href="#true-span-class-navy-app-cs-class-span"><span class="navy">App.cs Class</span></a></li>
+<li><a href="#true-span-class-navy-storagedomain-class-span"><span class="navy">StorageDomain Class</span></a></li>
 </ul>
 </li>
-<li><a href="#true-span-class-navy-mvvmcross-span"><span class="navy">MVVMCross</span></a></li>
-<li><a href="#true-span-class-navy-excalibur-span"><span class="navy">Excalibur</span></a></li>
-<li><a href="#true-span-class-navy-layer-specification-span"><span class="navy">Layer specification</span></a></li>
-<li><a href="#true-span-class-navy-dependency-injection-span"><span class="navy">Dependency Injection</span></a></li>
 <li><a href="#true-span-class-navy-external-links-span"><span class="navy">External links</span></a></li>
 </ul>
 </div>
@@ -462,6 +463,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms (MvvmCross based). Custom implementations for other frameworks can be developed using the Excalibur.Shared.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Excalibur framework can target Native and forms projects. Please go to <a href="https://github.com/Xciles/Excalibur">Excalibur github site</a> and play with the samples provided.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -476,7 +489,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Windows 10</p>
 </li>
 <li>
-<p>Visual Studio Community 2017</p>
+<p>Latest Visual Studio Community 2017+</p>
 </li>
 <li>
 <p>x86 processor to run Android Emulator. If AMD processor is used, you should try another emulator such <a href="https://www.genymotion.com">Geny motion</a>.</p>
@@ -522,6 +535,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect2">
 <h3 id="truemac"><a class="anchor" href="#truemac"></a>Mac</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Latest Visual Studio for Mac</p>
+</li>
+</ul>
+</div>
 <table>
 <thead>
 <tr>
@@ -844,8 +864,11 @@ This chart is important in order to make you select the most apropiate  .NET sta
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="trueview"><a class="anchor" href="#trueview"></a>View</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="true-span-class-navy-view-span"><a class="anchor" href="#true-span-class-navy-view-span"></a><span class="navy">View</span></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The view is responsible for defining the structure, layout, and appearance of what the user sees on screen. Ideally, each view is defined in XAML, with a limited code-behind that does not contain business logic. However, in some cases, the code-behind might contain UI logic that implements visual behavior that is difficult to express in XAML, such as animations.</p>
 </div>
@@ -853,8 +876,10 @@ This chart is important in order to make you select the most apropiate  .NET sta
 <p>In a Xamarin.Forms application, a view is typically a Page-derived or ContentView-derived class. However, views can also be represented by a data template, which specifies the UI elements to be used to visually represent an object when it&#8217;s displayed. A data template as a view does not have any code-behind, and is designed to bind to a specific view model type.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="trueviewmodel"><a class="anchor" href="#trueviewmodel"></a>ViewModel</h3>
+</div>
+<div class="sect1">
+<h2 id="true-span-class-navy-viewmodel-span"><a class="anchor" href="#true-span-class-navy-viewmodel-span"></a><span class="navy">ViewModel</span></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The view model implements properties and commands to which the view can data bind to, and notifies the view of any state changes through change notification events. The properties and commands that the view model provides define the functionality to be offered by the UI, but the view determines how that functionality is to be displayed.</p>
 </div>
@@ -871,8 +896,10 @@ This chart is important in order to make you select the most apropiate  .NET sta
 <p>For collections, the view-friendly ObservableCollection&lt;T&gt; is provided. This collection implements collection changed notification, relieving the developer from having to implement the INotifyCollectionChanged interface on collections.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="truemodel"><a class="anchor" href="#truemodel"></a>Model</h3>
+</div>
+<div class="sect1">
+<h2 id="true-span-class-navy-model-span"><a class="anchor" href="#true-span-class-navy-model-span"></a><span class="navy">Model</span></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Model classes are non-visual classes that encapsulate the app&#8217;s data. Therefore, the model can be thought of as representing the app&#8217;s domain model, which usually includes a data model along with business and validation logic. Examples of model objects include data transfer objects (DTOs), Plain Old CLR Objects (POCOs), and generated entity and proxy objects.</p>
 </div>
@@ -881,37 +908,275 @@ This chart is important in order to make you select the most apropiate  .NET sta
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
 <h2 id="true-span-class-navy-mvvmcross-span"><a class="anchor" href="#true-span-class-navy-mvvmcross-span"></a><span class="navy">MVVMCross</span></h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>The excalibur framework is based on MVVM Cross. Plase read documentation before starting an Excalibur project.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="true-span-class-navy-excalibur-span"><a class="anchor" href="#true-span-class-navy-excalibur-span"></a><span class="navy">Excalibur</span></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Excalibur frameworks works over MVVMCross framework. That&#8217;s is you can use the power of MVVMCross with the acceleration part from Excalibur.</p>
+</div>
+<div class="paragraph">
+<p>Excalibur framework use the MVVM Pattern (well known on Xamarin stack). Excalibur framework gives support to</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Xamarin Native applications (Android/iOS/UWP)</p>
+</li>
+<li>
+<p>Xamarin Forms</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>OASP4X is aimed in Xarin Forms in order to reuse the designed views and speed up the development process.</p>
+</div>
+<div class="sect2">
+<h3 id="true-span-class-navy-layer-specification-span"><a class="anchor" href="#true-span-class-navy-layer-specification-span"></a><span class="navy">Layer specification</span></h3>
+<div id="img-t-architecture" class="imageblock">
+<div class="content">
+<a class="image" href="images/solution_tree.png"><img src="images/solution_tree.png" alt="Excalibur forms solution tree" width="250"></a>
+</div>
+<div class="title">Figure 4. Excalibur forms solution tree</div>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-business-span"><a class="anchor" href="#true-span-class-navy-business-span"></a><span class="navy">Business</span></h4>
+<div class="paragraph">
+<p>Manages data within the app
+Saving
+Retrieving
+Updating
+Manages Application state
+Uses services to retrieve and update data
+Publish (pub/sub) entities when updated</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-domain-span"><a class="anchor" href="#true-span-class-navy-domain-span"></a><span class="navy">Domain</span></h4>
+<div class="paragraph">
+<p>Just a tiny entity used for saving data and service communication</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-observable-span"><a class="anchor" href="#true-span-class-navy-observable-span"></a><span class="navy">Observable</span></h4>
+<div class="paragraph">
+<p>Observable entities
+A Domain entity with extended properties and Notifications
+Used by ViewModels and Views instead of Domain</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-presentation-span"><a class="anchor" href="#true-span-class-navy-presentation-span"></a><span class="navy">Presentation</span></h4>
+<div class="paragraph">
+<p>Manages observable instances
+Used for sharing the same observable instances between ViewModels
+Subscribes (pub/sub) on certain entities
+Uses Mappers to map Models to Observables</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-service-span"><a class="anchor" href="#true-span-class-navy-service-span"></a><span class="navy">Service</span></h4>
+<div class="paragraph">
+<p>Communication with a back-end
+Used by the Business
+May have its own entity for data transfer (instead of Domain)</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-view-models-span"><a class="anchor" href="#true-span-class-navy-view-models-span"></a><span class="navy">View Models</span></h4>
+<div class="paragraph">
+<p>Manages navigation
+Manages language bindings
+Views use the ViewModel Observables for binding</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="true-span-class-navy-app-cs-class-span"><a class="anchor" href="#true-span-class-navy-app-cs-class-span"></a><span class="navy">App.cs Class</span></h3>
+<div class="paragraph">
+<p>In each deployed Excalibur/MvvmCross application there are two key classes which control how your app starts:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the App class in the core project - which provides the initialization for your core business logic and your viewmodels.</p>
+</li>
+<li>
+<p>the Setup class in the native UI project - this Setup is a bootstrapper for the MvvmCross system and for your app.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Typically App.cs provides only initialization of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c#" data-lang="c#">        public override void Initialize()
+        {
+            base.Initialize();
 
-</div>
-</div>
-<div class="sect1">
-<h2 id="true-span-class-navy-layer-specification-span"><a class="anchor" href="#true-span-class-navy-layer-specification-span"></a><span class="navy">Layer specification</span></h2>
-<div class="sectionbody">
+            CreatableTypes()
+               .EndingWith("Service")
+               .AsInterfaces()
+               .RegisterAsLazySingleton();
 
+            RegisterAppStart&lt;LoginViewModel&gt;();
+        }</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="true-span-class-navy-dependency-injection-span"><a class="anchor" href="#true-span-class-navy-dependency-injection-span"></a><span class="navy">Dependency Injection</span></h2>
-<div class="sectionbody">
-
+<div class="ulist">
+<ul>
+<li>
+<p>within the Assembly containing the App</p>
+</li>
+<li>
+<p>find all creatable Types - meaning:</p>
+</li>
+<li>
+<p>with public constuctors</p>
+</li>
+<li>
+<p>not marked abstract</p>
+</li>
+<li>
+<p>find the interfaces they implement</p>
+</li>
+<li>
+<p>lazily register these types as singletons - meaning:</p>
+</li>
+<li>
+<p>that no instance will be created until one is requested</p>
+</li>
+<li>
+<p>that once the first instance has been created, then that - same instance will be returned for all subsequent requests</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>At this point, yopu can register the MVVM artifacts automatically.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The view : LoginPage.xaml/.cs (In the xaml file you can refere the name space of the view model)</p>
+</li>
+<li>
+<p>The model: LoginViewModel.cs</p>
+</li>
+<li>
+<p>The Service: LoginService.cs</p>
+</li>
+<li>
+<p>The observable: Login.cs</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-dependency-injection-span"><a class="anchor" href="#true-span-class-navy-dependency-injection-span"></a><span class="navy">Dependency Injection</span></h4>
+<div class="paragraph">
+<p>Excalibur use the Xamarin.IoC component to implement the inverision of control. In order to register the instance of your classes, override the method <em>RegisterDependencies</em> on App.cs Class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c#" data-lang="c#">        public override void RegisterDependencies()
+        {
+            // Application Things
+            Container.RegisterSingle&lt;IApplicationState, ApplicationState&gt;();
+            Container.RegisterSingle&lt;ISyncService, SyncService&gt;();
+            ...
+        }</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Container</em> is the IoC class (Excalibur&#8217;s SimpleContainer class) that register your class.</p>
+</li>
+<li>
+<p>In this method you can register the application services, domain objects, business objects, observable objects&#8230;&#8203; Please play with <a href="https://github.com/oasp/oasp4x/tree/develop/Samples/Standard/MyThaiStar">My Thai Star sample</a> in order to discover Excalibur&#8217;s life cicle.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="true-span-class-navy-storagedomain-class-span"><a class="anchor" href="#true-span-class-navy-storagedomain-class-span"></a><span class="navy">StorageDomain Class</span></h3>
+<div class="paragraph">
+<p>The <em>StorageDomain</em> class can be used for local database operations on the device. It&#8217;s very useful to store local data such user preferences, auth tokens, item kart&#8230;&#8203;</p>
+</div>
+<div class="sect3">
+<h4 id="true-span-class-navy-how-to-use-span"><a class="anchor" href="#true-span-class-navy-how-to-use-span"></a><span class="navy">How to use</span></h4>
+<div class="paragraph">
+<p>If you want to work with <em>StorageDomain</em> class just inherit your class from <em>StorageDomain</em>. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c#" data-lang="c#">    public class Todo : StorageDomain&lt;int&gt;
+    {
+        public int UserId { get; set; }
+        public string Title { get; set; }
+        public bool Completed { get; set; }
+    }</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>UpdateFromServiceAsync(): Updates the storage entities using a &lt;see cref="IServiceBase{T}"/&gt;. Afterwards this should publish a message to all subscribers</p>
+</li>
+<li>
+<p>PublishFromStorageAsync: Gets data to notify subscribers. Entities should be loaded (if needed) from storage, not from services.</p>
+</li>
+<li>
+<p>Sample to save data on a view model:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>await Resolver.Resolve&lt;IListBusiness&lt;int, Domain.User&gt;&gt;().UpdateFromServiceAsync();</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Sample to load data on a view model:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>if (!Observables.Any())
+    {
+        Resolver.Resolve&lt;IListBusiness&lt;int, Domain.Todo&gt;&gt;().PublishFromStorageAsync();
+    }
+}</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="true-span-class-navy-external-links-span"><a class="anchor" href="#true-span-class-navy-external-links-span"></a><span class="navy">External links</span></h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="https://www.mvvmcross.com">MVVMCross</a></p>
-</div>
 <div class="paragraph">
 <p><a href="https://github.com/Xciles/Excalibur">Excalibur framework home</a></p>
 </div>
@@ -921,12 +1186,18 @@ This chart is important in order to make you select the most apropiate  .NET sta
 <div class="paragraph">
 <p><a href="https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/net-standard?tabs=windows">.NET Standard fundamentals</a></p>
 </div>
+<div class="paragraph">
+<p><a href="https://www.mvvmcross.com">MVVMCross</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://www.mvvmcross.com/documentation/advanced/customizing-using-App-and-Setup">MVVMCross setup</a></p>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-08-01 14:16:27 RDT
+Last updated 2018-08-02 10:32:08 RDT
 </div>
 </div>
 <link rel="stylesheet" href="css/github.min.css">
