@@ -94,34 +94,34 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.6.1.1\lib\netstandard1.1\AutoMapper.dll</HintPath>
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\netstandard1.1\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PubSub, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PubSub.2.0.0\lib\netstandard1.1\PubSub.dll</HintPath>
+      <HintPath>..\packages\PubSub.2.0.0\lib\netstandard1.1\PubSub.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.ComponentModel.Primitives.4.3.0\lib\netstandard1.0\System.ComponentModel.Primitives.dll</HintPath>
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\netstandard1.0\System.ComponentModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.TypeConverter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.ComponentModel.TypeConverter.4.3.0\lib\netstandard1.0\System.ComponentModel.TypeConverter.dll</HintPath>
+      <HintPath>..\packages\System.ComponentModel.TypeConverter.4.3.0\lib\netstandard1.0\System.ComponentModel.TypeConverter.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
     <Reference Include="XLabs.IOC, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\XLabs.IoC.2.3.0-pre05\lib\portable-net45+win8+wpa81+wp8+monoandroid+monotouch+xamarinios10+xamarinmac\XLabs.IOC.dll</HintPath>
+      <HintPath>..\packages\XLabs.IoC.2.3.0-pre05\lib\portable-net45+win8+wpa81+wp8+monoandroid+monotouch+xamarinios10+xamarinmac\XLabs.IOC.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets')" />
+  <Import Project="..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets'))" />
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets'))" />
   </Target>
 </Project>

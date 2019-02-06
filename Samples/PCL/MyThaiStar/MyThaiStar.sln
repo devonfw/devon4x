@@ -17,15 +17,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyThaiStar.iOS", "MyThaiSta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Excalibur", "Excalibur", "{056CB0C7-D6E5-4018-9BA7-9EDE1E3E7AEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Cross", "Excalibur\Excalibur.Cross\Excalibur.Cross.csproj", "{8CD6A3A6-B0F4-442D-B8B3-6A29EDC5BC8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Cross", "Excalibur.Cross\Excalibur.Cross.csproj", "{8CD6A3A6-B0F4-442D-B8B3-6A29EDC5BC8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Forms", "Excalibur\Excalibur.Forms\Excalibur.Forms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Forms", "Excalibur.Forms\Excalibur.Forms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Shared", "Excalibur\Excalibur.Shared\Excalibur.Shared.csproj", "{F955794C-3A41-4A7F-AAC1-C8D6C26A8468}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Shared", "Excalibur.Shared\Excalibur.Shared.csproj", "{F955794C-3A41-4A7F-AAC1-C8D6C26A8468}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{C7B5F43D-5C52-4B27-8735-7775ABDD6082}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Providers.File", "Excalibur\Providers\Excalibur.Providers.File\Excalibur.Providers.File.csproj", "{55928A6C-F0EA-4D62-B5AE-72455312B264}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Providers.File", "Providers\Excalibur.Providers.File\Excalibur.Providers.File.csproj", "{55928A6C-F0EA-4D62-B5AE-72455312B264}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
