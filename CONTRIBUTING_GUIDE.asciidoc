@@ -61,8 +61,8 @@ This is a private repository. You have to be logged in and have permissions to a
 
 In order to contribute to our projects, developers must follow the following <<Development Guidelines,development guidelines>>. Other sources about contributing to devon/OASP:
 
-* https://github.com/oasp/oasp4j/wiki/oasp-code-contributions[OASP code contributions]
-* https://github.com/oasp/oasp4j/wiki/oasp-documentation[OASP documentation]
+* https://github.com/devonfw/devon4j/wiki/devonfw-code-contributions[devonfw code contributions]
+* https://github.com/devonfw/devon4j/wiki/devonfw-documentation[devonfw documentation]
 * https://troom.capgemini.com/sites/vcc/devon/collaboration.aspx[Devon collaboration]
 
 *Every project must include the following files* in order to establish the contributing rules and facilitate the process:
