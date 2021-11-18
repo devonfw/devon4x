@@ -36,10 +36,10 @@ An in-depth documentation on basic Git syntax and usage can be found on the http
 
 In total, there are three GitHub projects regarding OASP and devon:
 
-* link:https://github.com/oasp-forge[*oasp-forge*]
+* link:https://github.com/devonfw-forge[*devonfw-forge*]
 +
 Repository used for work on the guide - Similar to the according devon repository link:https://github.com/devonfw/devon-guide/wiki[*devon-guide*]
-* link:https://github.com/oasp/[*oasp*]
+* link:https://github.com/devonfw/[*devonfw*]
 +
 The official _Open Application Standard Platform_ project repository. Usually, two main branches exist:
 
