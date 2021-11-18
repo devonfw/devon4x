@@ -82,7 +82,7 @@ image::images/java/component_structure.png[, link="images/java/component_structu
 
 === Dependency injection
 
-As it is explained in the https://github.com/oasp/oasp4j/wiki/guide-dependency-injection[oasp documentation] we are going to implement the _dependency injection_ pattern basing our solution on _Spring_ and the Java standards: _java.inject_ (JSR330) combined with JSR250.
+As it is explained in the https://github.com/devonfw/devon4j/wiki/guide-dependency-injection[devonfw documentation] we are going to implement the _dependency injection_ pattern basing our solution on _Spring_ and the Java standards: _java.inject_ (JSR330) combined with JSR250.
 
 image::images/java/dependency_injection.png[, link="images/java/dependency_injection.png"]
 
@@ -170,7 +170,7 @@ To give service to the defined _User Stories_ we will need to implement the foll
 - provide the _current user_ data (see the _Security_ section)
 
 
-Following the https://github.com/oasp/oasp4j/wiki/guide-rest[naming conventions] proposed for _Oasp4j_ applications we will define the following _end points_ for the listed services.
+Following the https://github.com/devonfw/devon4j/wiki/guide-rest[naming conventions] proposed for _Oasp4j_ applications we will define the following _end points_ for the listed services.
 
 - (POST) `/mythaistar/services/rest/dishmanagement/v1/dish/search`.
 
