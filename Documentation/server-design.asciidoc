@@ -151,7 +151,7 @@ public class DishmanagementImpl extends AbstractComponentFacade implements Dishm
 
 == Service layer
 
-The services layer will be solved using REST services with the https://github.com/oasp/oasp4j/wiki/guide-rest#jax-rs[JAX-RS implementation]. 
+The services layer will be solved using REST services with the https://github.com/devonfw/devon4j/wiki/guide-rest#jax-rs[JAX-RS implementation]. 
 
 To give service to the defined _User Stories_ we will need to implement the following services:
 
@@ -189,7 +189,7 @@ Following the https://github.com/devonfw/devon4j/wiki/guide-rest[naming conventi
 - (GET) `/mythaistar/services/rest/security/v1/currentuser/`.
 
 
-You can find all the details for the services implementation in the https://github.com/oasp/my-thai-star/blob/develop/swagger/mythaistar.yaml[Swagger definition] included in the My Thai Star project on Github.
+You can find all the details for the services implementation in the https://github.com/devonfw/my-thai-star/blob/develop/swagger/mythaistar.yaml[Swagger definition] included in the My Thai Star project on Github.
 
 === Service api
 
