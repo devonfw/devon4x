@@ -235,14 +235,14 @@ public class DishmanagementRestServiceImpl implements DishmanagementRestService 
 
 [NOTE]
 ====
-You can see the Oasp4j conventions for REST services https://github.com/oasp/oasp4j/wiki/guide-rest[here]. And the My Thai Star services definition https://github.com/oasp/my-thai-star/blob/develop/swagger/mythaistar.yaml[here] as part of the https://github.com/oasp/my-thai-star[My Thai Star] project.
+You can see the Oasp4j conventions for REST services https://github.com/devonfw/devon4j/wiki/guide-rest[here]. And the My Thai Star services definition https://github.com/devonfw/my-thai-star/blob/develop/swagger/mythaistar.yaml[here] as part of the https://github.com/devonfw/my-thai-star[My Thai Star] project.
 ====
 
 == Logic layer
 
 In the _logic_ layer we will locate all the _business logic_ of the application. We will keep the same schema as we have done for the _service_ layer, having an _api_ package with the definition of the methods and a _impl_ package for the implementation.
 
-Also, inside the _api_ package, a _to_ package will be the place to store the https://github.com/oasp/oasp4j/wiki/guide-transferobject[_transfer objects_] needed to pass data through the layers of the component.
+Also, inside the _api_ package, a _to_ package will be the place to store the https://github.com/devonfw/devon4j/wiki/guide-transferobject[_transfer objects_] needed to pass data through the layers of the component.
 
 image::images/java/logic_layer.png[, link="images/java/logic_layer.png"]
 
@@ -287,13 +287,13 @@ Also, the _logic_ layer is the place to add validation for _Authorization_ based
 
 The data-access layer is responsible for managing the connections to access and process data. The mapping between java objects to a relational database is done in _Oasp4j_ with the http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html[Java Persistence API] (JPA) and, as implementation, the recommended one is http://hibernate.org/orm/[Hibernate]. 
 
-As in the previous layers, the _data-access_ layer will have both _api_ and _impl_ packages. However, in this case, the implementation will be slightly different. The _api_ package will store the _component_ main _entities and, inside the _api_ package, another _api.dao_ package will serve to house the _interfaces_ with the definition of the layer functionalities. In the other side, the _impl.dao_ package will store the implementation of the dao interfaces. The _dao_ interface will extend `ApplicationDao` class (located in `general.dataaccess.api.dao` package) and due to the class hierarchy of the https://github.com/oasp/oasp4j/tree/develop/modules/jpa[`oasp.module.jpa`] the main methods will be already implemented and the class of the `impl.dao` package will only need to define the less standard ones.
+As in the previous layers, the _data-access_ layer will have both _api_ and _impl_ packages. However, in this case, the implementation will be slightly different. The _api_ package will store the _component_ main _entities and, inside the _api_ package, another _api.dao_ package will serve to house the _interfaces_ with the definition of the layer functionalities. In the other side, the _impl.dao_ package will store the implementation of the dao interfaces. The _dao_ interface will extend `ApplicationDao` class (located in `general.dataaccess.api.dao` package) and due to the class hierarchy of the https://github.com/devonfw/devon4j/tree/develop/modules/jpa[`oasp.module.jpa`] the main methods will be already implemented and the class of the `impl.dao` package will only need to define the less standard ones.
 
-For queries we will differentiate between _static queries_ (that will be located in a mapped file) and _dynamic queries_ (implemented with http://www.querydsl.com/[QueryDsl]). You can find all the details about how to manage queries with _Oasp4j_ https://github.com/oasp/oasp4j/wiki/guide-dataaccess-layer#queries[here]. 
+For queries we will differentiate between _static queries_ (that will be located in a mapped file) and _dynamic queries_ (implemented with http://www.querydsl.com/[QueryDsl]). You can find all the details about how to manage queries with _Oasp4j_ https://github.com/devonfw/devon4j/wiki/guide-dataaccess-layer#queries[here]. 
 
 The default data base included in the project will be the http://www.h2database.com/html/main.html[H2] instance included with the _Oasp4j_ projects.
 
-To get more details about _pagination_, _data base security, _concurrency control_, _inheritance_ or how to solve the different _relationships_ between entities visit the official https://github.com/oasp/oasp4j/wiki/guide-dataaccess-layer[oasp4j dataaccess documentation].
+To get more details about _pagination_, _data base security, _concurrency control_, _inheritance_ or how to solve the different _relationships_ between entities visit the official https://github.com/devonfw/devon4j/wiki/guide-dataaccess-layer[oasp4j dataaccess documentation].
 
 == Security with Json Web Token
 
