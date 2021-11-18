@@ -98,7 +98,7 @@ git checkout develop-x.y.z
 ----
 git checkout -b myBranchName
 ----
-* Apply your modifications according to the https://github.com/oasp/oasp4j/wiki/coding-conventions[coding conventions] to the newly created branch
+* Apply your modifications according to the https://github.com/devonfw/devon4j/wiki/coding-conventions[coding conventions] to the newly created branch
 * Verify your changes to only include relevant and required changes.
 * Commit your changes locally
 ** When commiting changes please follow this pattern for your commit message:
