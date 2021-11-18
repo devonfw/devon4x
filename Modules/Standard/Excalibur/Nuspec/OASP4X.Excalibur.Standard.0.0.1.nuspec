@@ -13,7 +13,7 @@
     <summary>Excalibur achieves this by using Generics for a lot of boiler plating that you tend to write when developing using Xamarin. Excalibur currently has accelerators for Xamarin Native and Xamarin.Forms</summary>
     <releaseNotes>Standard 2.0 version with MVVMCross 6.1+.
 
-Also check  https://github.com/oasp/oasp4x</releaseNotes>
+Also check  https://github.com/devonfw/devon4x</releaseNotes>
     <copyright>2018</copyright>
     <language>en-GB</language>
     <tags>OASP4X Excalibur</tags>
