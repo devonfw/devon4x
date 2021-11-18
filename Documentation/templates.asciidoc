@@ -37,7 +37,7 @@ To start developing with OASP4Net template, please follow this instructions:
 
 == [navy]#Links#
 
-icon:= fa-floppy-o[]  link:https://github.com/oasp/oasp4net/tree/develop/Templates[.Net templates]
+icon:= fa-floppy-o[]  link:https://github.com/devonfw/devon4net/tree/develop/source/Templates[.Net templates]
 
 
 
