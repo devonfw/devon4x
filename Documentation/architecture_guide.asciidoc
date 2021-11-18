@@ -453,7 +453,7 @@ Excalibur use the Xamarin.IoC component to implement the inverision of control. 
 
 * _Container_ is the IoC class (Excalibur's SimpleContainer class) that register your class.
 
-* In this method you can register the application services, domain objects, business objects, observable objects... Please play with https://github.com/oasp/oasp4x/tree/develop/Samples/Standard/MyThaiStar[My Thai Star sample] in order to discover Excalibur's life cicle.
+* In this method you can register the application services, domain objects, business objects, observable objects... Please play with https://github.com/devonfw/devon4x/tree/develop/Samples/Standard/MyThaiStar[My Thai Star sample] in order to discover Excalibur's life cicle.
 
 
 === [navy]#StorageDomain Class#
