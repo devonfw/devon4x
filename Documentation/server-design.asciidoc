@@ -7,13 +7,13 @@ toc::[]
 
 The Java backend for My Thai Star application is going to be based on:
 
-- *OASP4J* as the Java framework
+- *devon4j* as the Java framework
 - *Devonfw* as the Development environment
 - *Cobigen* as code generation tool
 
 To know more details about the above technologies please visit the following documentation:
 
-- https://github.com/oasp/oasp4j/wiki[OASP4J]
+- https://github.com/devonfw/devon4j/wiki[devon4J]
 
 - https://github.com/devonfw/devon/wiki[Devonfw]
 
@@ -66,11 +66,11 @@ Other components:
 
 === Layers
 
-- https://github.com/oasp/oasp4j/wiki/guide-service-layer[Service Layer]: this layer will expose the REST api to exchange information with the client applications.
+- https://github.com/devonfw/devon4j/wiki/guide-service-layer[Service Layer]: this layer will expose the REST api to exchange information with the client applications.
 
-- https://github.com/oasp/oasp4j/wiki/guide-logic-layer[Logic Layer]: the layer in charge of hosting the business logic of the application.
+- https://github.com/devonfw/devon4j/wiki/guide-logic-layer[Logic Layer]: the layer in charge of hosting the business logic of the application.
 
-- https://github.com/oasp/oasp4j/wiki/guide-dataaccess-layer[Data Access Layer]: the layer to communicate with the data base.
+- https://github.com/devonfw/devon4j/wiki/guide-dataaccess-layer[Data Access Layer]: the layer to communicate with the data base.
 
 This architecture is going to be reflected dividing each component of the application in different packages to match those three layers.
 
