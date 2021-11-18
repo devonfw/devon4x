@@ -207,7 +207,7 @@ Following the [naming conventions] proposed for _Oasp4Net_ applications we will 
 - (GET) `/mythaistar/services/rest/security/v1/currentuser/`.
 
 
-You can find all the details for the services implementation in the https://github.com/oasp/my-thai-star/blob/develop/swagger/mythaistar.yaml[Swagger definition] included in the My Thai Star project on Github.
+You can find all the details for the services implementation in the https://github.com/devonfw/my-thai-star/blob/develop/swagger/mythaistar.yaml[Swagger definition] included in the My Thai Star project on Github.
 
 === [navy]#Api Exposed#
 
@@ -319,6 +319,4 @@ https://developers.google.com/gmail/api/auth/scopes[About Scopes]
 
 == [navy]#Downloads#
 
-icon:= fa-floppy-o[]  link:https://github.com/oasp/my-thai-star/tree/develop/net[My Thai Star (.Net Core Server + Angular client)]
-
-icon:= fa-floppy-o[]  link:https://github.com/oasp/oasp4net/tree/pre/Samples[Google Mail API Consumer]
+icon:= fa-floppy-o[]  link:https://github.com/devonfw/my-thai-star/tree/develop/net[My Thai Star (.Net Core Server + Angular client)]
