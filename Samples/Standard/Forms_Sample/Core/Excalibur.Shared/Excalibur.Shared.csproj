@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PubSub" Version="2.0.0" />
     <PackageReference Include="XLabs.IoC" Version="2.3.0-pre05" />
   </ItemGroup>
